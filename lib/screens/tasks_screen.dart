@@ -19,14 +19,18 @@ class _TasksScreenState extends State<TasksScreen> {
     List<Task> tasks = [task1, task2, task3];
     // Task newTask;
     Widget buildBottomSheet(BuildContext context) {
-      return Container(
+      // keyboard をスクロール範囲に入れる
+      return SingleChildScrollView(
+        child: Container(
+          // keyboard の上に要素を表示するようにする(MediaQuery)
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
           ),
         ),
-        // height: 300, // Keyboard の高さを調整するまではコメントアウト
         child: Padding(
           padding: const EdgeInsets.all(32.0),
           child: IntrinsicWidth(
@@ -83,6 +87,7 @@ class _TasksScreenState extends State<TasksScreen> {
               ],
             ),
           ),
+        ),
         ),
       );
     }
@@ -151,6 +156,7 @@ class _TasksScreenState extends State<TasksScreen> {
         onPressed: () {
           // ハーフモーダル
           showModalBottomSheet(
+            isScrollControlled: true, // full screen
             context: context, // tells navigation stack and theme
             builder: buildBottomSheet,
           );
