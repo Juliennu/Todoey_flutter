@@ -12,9 +12,9 @@ class TasksScreen extends StatefulWidget {
 class _TasksScreenState extends State<TasksScreen> {
   @override
   Widget build(BuildContext context) {
-    final task1 = Task('Buy milk', false);
-    final task2 = Task('Buy egg', false);
-    final task3 = Task('Buy bread', true);
+    final task1 = Task('Buy milk');
+    final task2 = Task('Buy egg');
+    final task3 = Task('Buy bread');
 
     List<Task> tasks = [task1, task2, task3];
     // Task newTask;
@@ -25,69 +25,69 @@ class _TasksScreenState extends State<TasksScreen> {
           // keyboard の上に要素を表示するようにする(MediaQuery)
           padding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: IntrinsicWidth(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Text(
-                  'Add Task',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.lightBlue,
-                    fontSize: 24,
-                  ),
-                ),
-                TextField(
-                  autofocus: true,
-                  autocorrect: false,
-                  textAlign: TextAlign.center,
-                  decoration: const InputDecoration(
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.lightBlue,
-                        width: 4,
-                      ),
-                    ),
-                    // fillColor: Colors.lightBlue,
-                  ),
-                  onSubmitted: (value) {
-                    setState(() {
-                      final newTask = Task(value, false);
-                      tasks.add(newTask);
-                      Navigator.pop(context);
-                    });
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                FilledButton(
-                  style: FilledButton.styleFrom(
-                    backgroundColor: Colors.lightBlueAccent,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(0),
-                      ),
-                    ),
-                  ),
-                  onPressed: () {
-                    // tasks.add(newTask);
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Add'),
-                ),
-              ],
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
             ),
           ),
-        ),
+          child: Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: IntrinsicWidth(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Text(
+                    'Add Task',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.lightBlue,
+                      fontSize: 24,
+                    ),
+                  ),
+                  TextField(
+                    autofocus: true,
+                    autocorrect: false,
+                    textAlign: TextAlign.center,
+                    decoration: const InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.lightBlue,
+                          width: 4,
+                        ),
+                      ),
+                      // fillColor: Colors.lightBlue,
+                    ),
+                    onSubmitted: (value) {
+                      setState(() {
+                        final newTask = Task(value);
+                        tasks.add(newTask);
+                        Navigator.pop(context);
+                      });
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  FilledButton(
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Colors.lightBlueAccent,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(0),
+                        ),
+                      ),
+                    ),
+                    onPressed: () {
+                      // tasks.add(newTask);
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Add'),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       );
     }

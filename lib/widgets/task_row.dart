@@ -23,17 +23,18 @@ class _TaskRowState extends State<TaskRow> {
           fontSize: 20,
           fontWeight: FontWeight.bold,
           // 取り消し線
-          decoration: widget.task.isChecked
+          decoration: widget.task.isDone
               ? TextDecoration.lineThrough
               : TextDecoration.none,
           decorationThickness: 2,
         ),
       ),
       trailing: Checkbox(
-          value: widget.task.isChecked,
-          onChanged: (value) {
+          value: widget.task.isDone,
+          activeColor: Colors.lightBlueAccent,
+          onChanged: (newValue) {
             setState(() {
-              widget.task.isChecked = !widget.task.isChecked;
+              widget.task.toggleDone();
             });
           }),
     );
