@@ -18,68 +18,74 @@ class _TasksScreenState extends State<TasksScreen> {
 
     List<Task> tasks = [task1, task2, task3];
     // Task newTask;
-
-    Widget halfModalSheet = Container(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
-      ),
-      // height: 300, // Keyboard の高さを調整するまではコメントアウト
-      child: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: IntrinsicWidth(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Text(
-                'Add Task',
-                style: TextStyle(
-                  color: Colors.lightBlue,
-                  fontSize: 24,
-                ),
-              ),
-              TextField(
-                decoration: const InputDecoration(
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.lightBlue,
-                      width: 4,
-                    ),
-                  ),
-                  // fillColor: Colors.lightBlue,
-                ),
-                onSubmitted: (value) {
-                  setState(() {
-                    final newTask = Task(value, false);
-                    tasks.add(newTask);
-                    Navigator.pop(context);
-                  });
-                },
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              FilledButton(
-                style: FilledButton.styleFrom(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(0),
-                    ),
-                  ),
-                ),
-                onPressed: () {
-                  // tasks.add(newTask);
-                  Navigator.pop(context);
-                },
-                child: const Text('Add'),
-              ),
-            ],
+    Widget buildBottomSheet(BuildContext context) {
+      return Container(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
           ),
         ),
-      ),
-    );
+        // height: 300, // Keyboard の高さを調整するまではコメントアウト
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: IntrinsicWidth(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text(
+                  'Add Task',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.lightBlue,
+                    fontSize: 24,
+                  ),
+                ),
+                TextField(
+                  autofocus: true,
+                  autocorrect: false,
+                  textAlign: TextAlign.center,
+                  decoration: const InputDecoration(
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.lightBlue,
+                        width: 4,
+                      ),
+                    ),
+                    // fillColor: Colors.lightBlue,
+                  ),
+                  onSubmitted: (value) {
+                    setState(() {
+                      final newTask = Task(value, false);
+                      tasks.add(newTask);
+                      Navigator.pop(context);
+                    });
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                FilledButton(
+                  style: FilledButton.styleFrom(
+                    backgroundColor: Colors.lightBlueAccent,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(0),
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    // tasks.add(newTask);
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Add'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
 
     Widget headerView = Padding(
       padding: const EdgeInsets.symmetric(
@@ -145,10 +151,8 @@ class _TasksScreenState extends State<TasksScreen> {
         onPressed: () {
           // ハーフモーダル
           showModalBottomSheet(
-            context: context,
-            builder: ((context) {
-              return halfModalSheet;
-            }),
+            context: context, // tells navigation stack and theme
+            builder: buildBottomSheet,
           );
         },
         backgroundColor: Colors.lightBlueAccent,
