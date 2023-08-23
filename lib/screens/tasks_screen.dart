@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todoey/models/task.dart';
+import 'package:provider/provider.dart';
+import 'package:todoey/models/task_data.dart';
+import 'package:todoey/screens/add_task_screen.dart';
 import 'package:todoey/widgets/task_row.dart';
 
 class TasksScreen extends StatefulWidget {
@@ -12,86 +14,6 @@ class TasksScreen extends StatefulWidget {
 class _TasksScreenState extends State<TasksScreen> {
   @override
   Widget build(BuildContext context) {
-    final task1 = Task('Buy milk');
-    final task2 = Task('Buy egg');
-    final task3 = Task('Buy bread');
-
-    List<Task> tasks = [task1, task2, task3];
-    // Task newTask;
-    Widget buildBottomSheet(BuildContext context) {
-      // keyboard をスクロール範囲に入れる
-      return SingleChildScrollView(
-        child: Container(
-          // keyboard の上に要素を表示するようにする(MediaQuery)
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: IntrinsicWidth(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const Text(
-                    'Add Task',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.lightBlue,
-                      fontSize: 24,
-                    ),
-                  ),
-                  TextField(
-                    autofocus: true,
-                    autocorrect: false,
-                    textAlign: TextAlign.center,
-                    decoration: const InputDecoration(
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.lightBlue,
-                          width: 4,
-                        ),
-                      ),
-                      // fillColor: Colors.lightBlue,
-                    ),
-                    onSubmitted: (value) {
-                      setState(() {
-                        final newTask = Task(value);
-                        tasks.add(newTask);
-                        Navigator.pop(context);
-                      });
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  FilledButton(
-                    style: FilledButton.styleFrom(
-                      backgroundColor: Colors.lightBlueAccent,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(0),
-                        ),
-                      ),
-                    ),
-                    onPressed: () {
-                      // tasks.add(newTask);
-                      Navigator.pop(context);
-                    },
-                    child: const Text('Add'),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-
     Widget headerView = Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 32,
@@ -121,7 +43,8 @@ class _TasksScreenState extends State<TasksScreen> {
             ),
           ),
           Text(
-            '${tasks.length} Tasks',
+            // Calls `context.watch` to make it rebuild when [TaskData] changes.
+            '${context.watch<TaskData>().taskCount} Tasks',
             style: const TextStyle(
               fontSize: 20,
               color: Colors.white,
@@ -145,7 +68,11 @@ class _TasksScreenState extends State<TasksScreen> {
             vertical: 44,
             horizontal: 32,
           ),
-          children: tasks.map((task) => TaskRow(task: task)).toList(),
+          children: context
+              .watch<TaskData>()
+              .tasks
+              .map((task) => TaskRow(task: task))
+              .toList(),
         ),
       ),
     );
@@ -156,10 +83,14 @@ class _TasksScreenState extends State<TasksScreen> {
         onPressed: () {
           // ハーフモーダル
           showModalBottomSheet(
-            isScrollControlled: true, // full screen
-            context: context, // tells navigation stack and theme
-            builder: buildBottomSheet,
-          );
+              isScrollControlled: true, // full screen
+              context: context, // tells navigation stack and theme
+              builder: (context) => AddTaskScreen(addTaskCallback: (task) {
+                    setState(() {
+                      // Calls `context.read` instead of `context.watch` so that it does not rebuild when [TaskData] changes.
+                      context.read<TaskData>().addTask(task.title);
+                    });
+                  }));
         },
         backgroundColor: Colors.lightBlueAccent,
         child: const Icon(
