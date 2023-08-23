@@ -85,10 +85,10 @@ class _TasksScreenState extends State<TasksScreen> {
           showModalBottomSheet(
               isScrollControlled: true, // full screen
               context: context, // tells navigation stack and theme
-              builder: (context) => AddTaskScreen(addTaskCallback: (task) {
+              builder: (context) => AddTaskScreen(addTaskCallback: (taskTitle) {
                     setState(() {
                       // Calls `context.read` instead of `context.watch` so that it does not rebuild when [TaskData] changes.
-                      context.read<TaskData>().addTask(task.title);
+                      context.read<TaskData>().addTask(taskTitle);
                     });
                   }));
         },

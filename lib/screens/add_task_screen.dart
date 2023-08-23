@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todoey/models/task.dart';
 
 class AddTaskScreen extends StatelessWidget {
   const AddTaskScreen({
@@ -7,11 +6,11 @@ class AddTaskScreen extends StatelessWidget {
     required this.addTaskCallback,
   });
 
-  final Function(Task) addTaskCallback;
+  final Function(String) addTaskCallback;
 
   @override
   Widget build(BuildContext context) {
-    Task? newTask;
+    late String newTaskTitle;
 
     // keyboard をスクロール範囲に入れる
     return SingleChildScrollView(
@@ -52,7 +51,7 @@ class AddTaskScreen extends StatelessWidget {
                     ),
                   ),
                   onChanged: (value) {
-                    newTask = Task(value);
+                    newTaskTitle = value;
                   },
                 ),
                 const SizedBox(
@@ -68,8 +67,7 @@ class AddTaskScreen extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    addTaskCallback(newTask ?? Task('title'));
-                    // print(newTask!.title);
+                    addTaskCallback(newTaskTitle);
                     Navigator.pop(context);
                   },
                   child: const Text('Add'),
